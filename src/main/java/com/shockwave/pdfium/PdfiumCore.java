@@ -185,6 +185,16 @@ public class PdfiumCore {
             return pagesPtr;
         }
     }
+    
+    public void closePage(PdfDocument doc, int pageIndex) {
+        synchronized (lock) {
+            if (doc.mNativePagesPtr.containsKey(pageIndex)) {
+                long pagePtr = doc.mNativePagesPtr.get(pageIndex);
+                nativeClosePage(pagePtr);
+                doc.mNativePagesPtr.remove(pageIndex);
+            }
+        }
+    }
 
     /**
      * Get page width in pixels. <br>
